@@ -10,3 +10,23 @@ RUN pecl install xdebug
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer config --global github-oauth.github.com a4eb70aa61c96075cd5fb5a8e8076c7513f7557d
+
+
+#USER 1000:1000
+
+ENV USER=marcin-dyszkiewicz
+ENV GROUP=marcin-dyszkiewicz
+ENV UID=1000
+ENV GID=1000
+
+RUN addgroup --uid "$GID" "$GROUP"
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "$(pwd)" \
+    --ingroup "$USER" \
+    --no-create-home \
+    --uid "$UID" \
+    "$USER"
+
+USER "$USER"
