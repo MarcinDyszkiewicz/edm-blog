@@ -2,17 +2,16 @@
 
 /** @var Factory $factory */
 
-use App\Models\Paragraph;
-use App\Models\Post;
+use App\Models\Category;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(
-    Paragraph::class,
+    Category::class,
     function (Faker $faker) {
         return [
-            'content' => $faker->paragraph,
-            'post_id' => factory(Post::class)->create()->id,
+            'slug' => $faker->slug,
+            'name' => $faker->word,
         ];
     }
 );
