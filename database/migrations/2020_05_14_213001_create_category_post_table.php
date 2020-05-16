@@ -18,7 +18,7 @@ class CreateCategoryPostTable extends Migration
             $table->timestamps();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
-            $table->integer('position');
+            $table->unsignedInteger('position');
         });
     }
 
@@ -29,6 +29,6 @@ class CreateCategoryPostTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('category_post_table');
+        Schema::dropIfExists('category_post');
     }
 }

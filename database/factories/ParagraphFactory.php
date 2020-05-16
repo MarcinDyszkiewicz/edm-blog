@@ -12,7 +12,7 @@ $factory->define(
     function (Faker $faker) {
         return [
             'content' => $faker->paragraph,
-            'post_id' => factory(Post::class)->create()->id,
+            'post_id' => fn() => factory(Post::class)->create()->id,
         ];
     }
 );

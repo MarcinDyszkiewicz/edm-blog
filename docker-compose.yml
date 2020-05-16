@@ -54,6 +54,8 @@ services:
       POSTGRES_USER: edm_blog
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: test_edm_blog_db
+    ports:
+      - 55499:5432
 
   nginx-proxy:
     image: jwilder/nginx-proxy
