@@ -19,6 +19,5 @@ class InterfaceServiceProvider extends ServiceProvider
     {
         $this->app->bind(PostServiceInterface::class, PostService::class);
         $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
-//        $this->app->bind(GenreRepositoryInterface::class, GenreRepository::class);
     }
 }

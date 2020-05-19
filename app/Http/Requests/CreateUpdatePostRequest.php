@@ -8,7 +8,7 @@ class CreateUpdatePostRequest extends FormRequest
 {
     public string $title;
     public ?string $slug;
-    public ?\DateTime $published_at;
+    public ?string $published_at;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -28,8 +28,8 @@ class CreateUpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|sting|max:500',
-            'slug' => 'nullable|sting|regex:/^[a-z0-9-]+$/igm',
+            'title' => 'required|string|max:500',
+            'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/i',
             'published_at' => 'nullable|date',
         ];
     }

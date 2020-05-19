@@ -22,11 +22,11 @@ class PostService implements PostServiceInterface
 
     public function createPost(CreateUpdatePostRequest $request, User $user): Post
     {
-        $this->postRepository->createPost($request, $user);
+        return $this->postRepository->createPost($request, $user);
     }
 
     public function updatePost(CreateUpdatePostRequest $request, Post $post): Post
     {
-        $this->postRepository->updatePost($request, $post);
+        return $this->postRepository->updatePost($request, $post);
     }
 }

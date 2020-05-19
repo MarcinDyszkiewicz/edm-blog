@@ -8,9 +8,9 @@ class MyJsonResponse extends JsonResponse
 {
     public function __construct(
         $data = null,
+        $status = 200,
         $success = true,
         $message = 'Ok',
-        $status = 200,
         $headers = [],
         $options = 0
     ) {

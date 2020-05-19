@@ -11,10 +11,21 @@ use App\Models\Post;
 use App\Models\User;
 use App\Services\PostServiceInterface;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Response;
+
 
 class PostController extends Controller
 {
+    /**
+     * @var PostServiceInterface
+     */
+    private PostServiceInterface $postService;
+
+    public function __construct(PostServiceInterface $postService)
+    {
+        $this->postService = $postService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +37,7 @@ class PostController extends Controller
             $posts = Post::query()->limit(20)->get();
 
             return new MyJsonResponse($posts);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return (new ExceptionResponse($e));
         }
     }
@@ -35,20 +46,17 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateUpdatePostRequest $request
-     * @param PostServiceInterface $postService
      * @return ExceptionResponse|MyJsonResponse|ValidationExceptionResponse
      */
-    public function store(CreateUpdatePostRequest $request, PostServiceInterface $postService)
+    public function store(CreateUpdatePostRequest $request)
     {
         try {
-            $user = User::all()->first() ?? factory(User::class);
-            $movie = $postService->createPost($request->validated(), $user);
+            $user = User::all()->first() ?? factory(User::class)->create();
+            $post = $this->postService->createPost($request->validated(), $user);
 
-            return new MyJsonResponse($movie);
+            return new MyJsonResponse($post, Response::HTTP_CREATED);
 //            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
-//        } catch (ValidationException $e) {
-//            return new ValidationExceptionResponse($e);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }
     }
@@ -56,34 +64,52 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
+     * @param Post $post
+     * @return ExceptionResponse|MyJsonResponse
      */
     public function show(Post $post)
     {
-        //
+        try {
+            return new MyJsonResponse($post);
+//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
+        } catch (\Throwable $e) {
+            return new ExceptionResponse($e);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
+     * @param CreateUpdatePostRequest $request
+     * @param Post $post
+     * @return ExceptionResponse|MyJsonResponse
      */
-    public function update(Request $request, Post $post)
+    public function update(CreateUpdatePostRequest $request, Post $post)
     {
-        //
+        try {
+            $post = $this->postService->updatePost($request->validated(), $post);
+
+            return new MyJsonResponse($post, Response::HTTP_CREATED);
+//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
+        } catch (\Throwable $e) {
+            return new ExceptionResponse($e);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
+     * @param Post $post
+     * @return ExceptionResponse|MyJsonResponse
      */
     public function destroy(Post $post)
     {
-        //
+        try {
+            $post->delete();
+            return new MyJsonResponse(null, Response::HTTP_NO_CONTENT);
+//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
+        } catch (\Throwable $e) {
+            return new ExceptionResponse($e);
+        }
     }
 }
