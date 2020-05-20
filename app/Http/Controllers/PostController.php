@@ -34,12 +34,50 @@ class PostController extends Controller
     public function index()
     {
         try {
-            $posts = Post::query()->limit(20)->get();
+//            $posts = Post::query()->limit(20)->get();
+
+            $test = $this->fetchItemsToDisplay([['p2',1,2],['p1',2,1]], 0, 0, 1, 0);
+
+            dd($test);
 
             return new MyJsonResponse($posts);
         } catch (\Throwable $e) {
             return (new ExceptionResponse($e));
         }
+    }
+
+    function fetchItemsToDisplay($items, $sortParameter, $sortOrder, $itemsPerPage, $pageNumber) {
+
+        usort($items, function($a, $b) use ($sortParameter) {
+            // return strnatcmp($a[$sortParameter], $b[$sortParameter]);
+            return $a[$sortParameter] <=> $b[$sortParameter];
+        });
+
+        if ($sortOrder == 1) {
+            $items = array_reverse($items);
+        }
+
+        $items = array_chunk($items, $itemsPerPage);
+        $page = $items[$pageNumber];
+
+
+        return array_column($page, 0);
+        // if($sortOrder == 0) {
+        //     $sortedItems = asort($items);
+        // }
+        //     if($sortOrder == 1) {
+        //     $sortedItems = arsort($items);
+        // }
+
+    }
+
+    function numberOfTokens($expiryLimit, $commands) {
+
+        $tokenId = $commands[0][1];
+        $time = $commands[0][2];
+        $expirity = $time + $expiryLimit;
+        echo $commands[0][0]; die;
+
     }
 
     /**
