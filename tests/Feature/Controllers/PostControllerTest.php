@@ -83,7 +83,7 @@ class PostControllerTest extends TestCase
     {
         $post = factory(Post::class)->create();
 
-        $response = $this->deleteJson(route('post.update', ['post' => $post]));
+        $response = $this->deleteJson(route('post.destroy', ['post' => $post]));
 
         $this->assertSoftDeleted($post);
         $response
