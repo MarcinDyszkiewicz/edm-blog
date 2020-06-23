@@ -39,7 +39,7 @@ class CreateUpdatePostRequest extends FormRequest
         $params = parent::validated();
         $this->title = $params['title'];
         $this->slug = $params['slug'];
-        $this->published_at = $params['published_at'];
+        $this->published_at = $params['published_at'] ?? null;
 
         return $this;
     }

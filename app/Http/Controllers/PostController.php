@@ -34,16 +34,50 @@ class PostController extends Controller
     public function index()
     {
         try {
-//            $posts = Post::query()->limit(20)->get();
+            $posts = Post::query()->limit(20)->get();
 
-            $test = $this->fetchItemsToDisplay([['p2',1,2],['p1',2,1]], 0, 0, 1, 0);
-
-            dd($test);
+//            $test = $this->fetchItemsToDisplay([['p2',1,2],['p1',2,1]], 0, 0, 1, 0);
+//            $test = $this->sockMerchant(9, [10, 20, 20, 10, 10, 30, 50, 10, 20]);
+//            dd($test);
 
             return new MyJsonResponse($posts);
         } catch (\Throwable $e) {
             return (new ExceptionResponse($e));
         }
+    }
+
+    function sockMerchant($n, $ar) {
+        $final = 0;
+//        $nestedAr = $ar;
+////        dd(array_count_values($ar));
+//        foreach($ar as $key => $item) {
+//            dump($item . 'parent');
+//            for($i= 1; $i < $n; $i++) {
+//                dump($ar[$i] . 'child');
+//                if($item === $nestedAr[$i]) {
+//                    $final++;
+//                    array_splice($nestedAr, $key, 1);
+//                    array_splice($ar, $i, 1);
+////                    unset($ar[$i]);
+//                    dump($ar);
+//                    break;
+//                }
+//            }
+//        }
+
+        $dups = array();
+//        dd(array_count_values($ar));
+        foreach(array_count_values($ar) as $key => $val){
+            if ($val> 1) {
+                $ammount = round($val/2, 0,PHP_ROUND_HALF_DOWN);
+                dump($ammount);
+                $final = $final + $ammount;
+//            if($c > 1) $dups[] = $val;
+            }
+        }
+
+        return (int) $final;
+
     }
 
     function fetchItemsToDisplay($items, $sortParameter, $sortOrder, $itemsPerPage, $pageNumber) {

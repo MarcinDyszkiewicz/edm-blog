@@ -59,11 +59,15 @@ class CategoryController extends Controller
      * Display the specified resource.
      *
      * @param Category $category
-     * @return \Illuminate\Http\Response
+     * @return ExceptionResponse|MyJsonResponse
      */
     public function show(Category $category)
     {
-        //
+        try {
+            return new MyJsonResponse($category->load('posts'));
+        } catch (\Throwable $e) {
+            return (new ExceptionResponse($e));
+        }
     }
 
     /**
