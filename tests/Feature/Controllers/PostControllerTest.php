@@ -3,8 +3,8 @@
 namespace Tests\Feature\Controllers;
 
 use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class PostControllerTest extends TestCase
@@ -29,11 +29,14 @@ class PostControllerTest extends TestCase
             'title' => 'Post Title',
             'slug' => '',
             'published_at' => '',
+            'paragraphs' => [
+                ['content' => 'text'],
+                ['content' => 'text2'],
+            ]
         ];
 
         $response = $this->postJson(route('post.store'), $postRequestParams);
 
-        $this->assertDatabaseHas('posts', ['title' => 'Post Title']);
         $response
             ->assertStatus(201)
             ->assertJson(
@@ -42,6 +45,34 @@ class PostControllerTest extends TestCase
                         'title' => 'Post Title',
                         'slug' => 'post-title',
                         'published_at' => null,
+                    ]
+                ]
+            );
+        $this->assertDatabaseHas('posts', ['title' => 'Post Title']);
+        $this->assertDatabaseHas('paragraphs', ['content' => 'text', 'post_id' => Post::all()->first()->id]);
+    }
+
+    public function testShowAction()
+    {
+        /** @var Post $post */
+        $post = factory(Post::class)->state('withParagraphs')->create(
+            [
+                'title' => 'Post Title',
+                'slug' => 'post-title',
+                'published_at' => Carbon::today()
+            ]
+        );
+
+        $response = $this->getJson(route('post.show', $post->id));
+
+        $response->assertStatus(200)
+            ->assertJson(
+                [
+                    'data' => [
+                        'title' => 'Post Title',
+                        'slug' => 'post-title',
+                        'published_at' => Carbon::today(),
+                        'paragraphs' => $post->paragraphs()->get()->toArray(),
                     ]
                 ]
             );

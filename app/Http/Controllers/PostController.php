@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUpdatePostRequest;
-use App\Http\Resources\MovieResource;
+use App\Http\Resources\SinglePostResource;
 use App\Http\Responses\ExceptionResponse;
 use App\Http\Responses\MyJsonResponse;
 use App\Http\Responses\ValidationExceptionResponse;
@@ -137,13 +137,12 @@ class PostController extends Controller
      * Display the specified resource.
      *
      * @param Post $post
-     * @return ExceptionResponse|MyJsonResponse
+     * @return SinglePostResource|ExceptionResponse
      */
     public function show(Post $post)
     {
         try {
-            return new MyJsonResponse($post);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
+            return SinglePostResource::make($post->load('paragraphs'));
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }
@@ -178,6 +177,7 @@ class PostController extends Controller
     {
         try {
             $post->delete();
+
             return new MyJsonResponse(null, Response::HTTP_NO_CONTENT);
 //            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {

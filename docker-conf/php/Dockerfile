@@ -2,7 +2,8 @@ FROM php:7.4.0-fpm
 
 RUN apt-get update && apt-get install -y zlib1g-dev -y zip libzip-dev libicu-dev g++ libcurl4-openssl-dev libpng-dev libjpeg-dev libmcrypt-dev less vim libpq-dev libxml2-dev libonig-dev && apt-get clean -y
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
-RUN docker-php-ext-install pdo pdo_pgsql pgsql intl curl gd zip mbstring tokenizer xml sockets bcmath soap pcntl
+RUN docker-php-ext-install pdo pdo_pgsql pgsql intl curl gd zip mbstring tokenizer xml sockets bcmath soap pcntl exif
+RUN docker-php-ext-enable exif
 
 #mcrypt
 

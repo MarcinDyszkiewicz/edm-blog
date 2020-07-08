@@ -22,3 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResource('post', 'PostController');
 Route::apiResource('post.paragraph', 'ParagraphController');
 Route::apiResource('category', 'CategoryController');
+
+Route::namespace('Post')->group(function () {
+    Route::apiResource('post.media', 'MediaController');
+});

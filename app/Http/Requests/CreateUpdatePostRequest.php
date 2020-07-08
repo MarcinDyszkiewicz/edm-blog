@@ -9,6 +9,7 @@ class CreateUpdatePostRequest extends FormRequest
     public string $title;
     public ?string $slug;
     public ?string $published_at;
+    public ?array $paragraphs;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -31,6 +32,8 @@ class CreateUpdatePostRequest extends FormRequest
             'title' => 'required|string|max:500',
             'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/i',
             'published_at' => 'nullable|date',
+            'paragraphs' => 'required|array',
+            'paragraphs.*.content' => 'string',
         ];
     }
 
@@ -40,6 +43,7 @@ class CreateUpdatePostRequest extends FormRequest
         $this->title = $params['title'];
         $this->slug = $params['slug'];
         $this->published_at = $params['published_at'] ?? null;
+        $this->paragraphs = $params['paragraphs'] ?? [];
 
         return $this;
     }

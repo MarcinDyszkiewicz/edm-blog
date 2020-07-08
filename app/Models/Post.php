@@ -4,11 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Post extends Model
+class Post extends Model implements HasMedia
 {
-    use SoftDeletes;
+    use SoftDeletes, InteractsWithMedia;
+
+    public function getMainImageAttribute(): string
+    {
+        return $this->getFirstMediaUrl('main_image');
+    }
 
     public function categories(): BelongsToMany
     {
@@ -17,9 +25,9 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function paragraphs(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function paragraphs(): HasMany
     {
         return $this->hasMany(Paragraph::class);
     }
@@ -28,7 +36,7 @@ class Post extends Model
      * @param int $categoryId
      * @return int|null
      */
-    public function positionInCategory(int $categoryId)
+    public function positionInCategory(int $categoryId): ?int
     {
         return $this->getCategory($categoryId)->pivot->position;
     }
@@ -36,5 +44,11 @@ class Post extends Model
     public function getCategory(int $categoryId): ?Category
     {
         return $this->categories()->where('category_id', $categoryId)->first();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('main_image')
+            ->singleFile();
     }
 }

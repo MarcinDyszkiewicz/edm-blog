@@ -19,6 +19,6 @@ $factory->define(
     }
 );
 
-//$factory->afterMaking(Post::class, function (Post $post, Faker $faker) {
-//    $post->paragraphs()->saveMany(factory(Paragraph::class, 3)->make());
-//});
+$factory->afterCreatingState(Post::class, 'withParagraphs', function (Post $post) {
+    $post->paragraphs()->saveMany(factory(Paragraph::class, 3)->make());
+});
