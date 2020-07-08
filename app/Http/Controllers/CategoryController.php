@@ -49,7 +49,6 @@ class CategoryController extends Controller
             $category = $this->categoryService->createCategory($request->validated());
 
             return new MyJsonResponse($category, Response::HTTP_CREATED);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }
@@ -83,7 +82,6 @@ class CategoryController extends Controller
             $category = $this->categoryService->updateCategory($request->validated(), $category);
 
             return new MyJsonResponse($category, Response::HTTP_CREATED);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }
@@ -101,7 +99,6 @@ class CategoryController extends Controller
             $category->delete();
 
             return new MyJsonResponse(null, Response::HTTP_NO_CONTENT);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }

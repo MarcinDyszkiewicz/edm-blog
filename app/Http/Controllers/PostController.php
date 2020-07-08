@@ -36,82 +36,10 @@ class PostController extends Controller
         try {
             $posts = Post::query()->limit(20)->get();
 
-//            $test = $this->fetchItemsToDisplay([['p2',1,2],['p1',2,1]], 0, 0, 1, 0);
-//            $test = $this->sockMerchant(9, [10, 20, 20, 10, 10, 30, 50, 10, 20]);
-//            dd($test);
-
             return new MyJsonResponse($posts);
         } catch (\Throwable $e) {
             return (new ExceptionResponse($e));
         }
-    }
-
-    function sockMerchant($n, $ar) {
-        $final = 0;
-//        $nestedAr = $ar;
-////        dd(array_count_values($ar));
-//        foreach($ar as $key => $item) {
-//            dump($item . 'parent');
-//            for($i= 1; $i < $n; $i++) {
-//                dump($ar[$i] . 'child');
-//                if($item === $nestedAr[$i]) {
-//                    $final++;
-//                    array_splice($nestedAr, $key, 1);
-//                    array_splice($ar, $i, 1);
-////                    unset($ar[$i]);
-//                    dump($ar);
-//                    break;
-//                }
-//            }
-//        }
-
-        $dups = array();
-//        dd(array_count_values($ar));
-        foreach(array_count_values($ar) as $key => $val){
-            if ($val> 1) {
-                $ammount = round($val/2, 0,PHP_ROUND_HALF_DOWN);
-                dump($ammount);
-                $final = $final + $ammount;
-//            if($c > 1) $dups[] = $val;
-            }
-        }
-
-        return (int) $final;
-
-    }
-
-    function fetchItemsToDisplay($items, $sortParameter, $sortOrder, $itemsPerPage, $pageNumber) {
-
-        usort($items, function($a, $b) use ($sortParameter) {
-            // return strnatcmp($a[$sortParameter], $b[$sortParameter]);
-            return $a[$sortParameter] <=> $b[$sortParameter];
-        });
-
-        if ($sortOrder == 1) {
-            $items = array_reverse($items);
-        }
-
-        $items = array_chunk($items, $itemsPerPage);
-        $page = $items[$pageNumber];
-
-
-        return array_column($page, 0);
-        // if($sortOrder == 0) {
-        //     $sortedItems = asort($items);
-        // }
-        //     if($sortOrder == 1) {
-        //     $sortedItems = arsort($items);
-        // }
-
-    }
-
-    function numberOfTokens($expiryLimit, $commands) {
-
-        $tokenId = $commands[0][1];
-        $time = $commands[0][2];
-        $expirity = $time + $expiryLimit;
-        echo $commands[0][0]; die;
-
     }
 
     /**
@@ -127,7 +55,6 @@ class PostController extends Controller
             $post = $this->postService->createPost($request->validated(), $user);
 
             return new MyJsonResponse($post, Response::HTTP_CREATED);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }
@@ -161,7 +88,6 @@ class PostController extends Controller
             $post = $this->postService->updatePost($request->validated(), $post);
 
             return new MyJsonResponse($post, Response::HTTP_CREATED);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }
@@ -179,7 +105,6 @@ class PostController extends Controller
             $post->delete();
 
             return new MyJsonResponse(null, Response::HTTP_NO_CONTENT);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }

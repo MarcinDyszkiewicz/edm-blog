@@ -32,7 +32,6 @@ class ParagraphController extends Controller
             $paragraphs = $this->paragraphService->getParagraphsForPost($post);
 
             return new MyJsonResponse($paragraphs);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }
@@ -51,7 +50,6 @@ class ParagraphController extends Controller
             $paragraph = $this->paragraphService->createParagraph($request->validated(), $post);
 
             return new MyJsonResponse($paragraph, Response::HTTP_CREATED);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }
@@ -82,7 +80,6 @@ class ParagraphController extends Controller
             $paragraph = $this->paragraphService->updateParagraph($request->validated(), $paragraph);
 
             return new MyJsonResponse($paragraph, Response::HTTP_CREATED);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }
@@ -101,7 +98,6 @@ class ParagraphController extends Controller
             $paragraph->delete();
 
             return new MyJsonResponse(null, Response::HTTP_NO_CONTENT);
-//            return MovieResource::make($movie)->additional(['message' => 'Movie Saved', 'success' => true]);
         } catch (\Throwable $e) {
             return new ExceptionResponse($e);
         }
